@@ -1,39 +1,21 @@
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
-from telegram.ext import (
-    ApplicationBuilder,
-    CommandHandler,
-    CallbackQueryHandler,
-    ContextTypes,
-)
 import os
+from telegram import Update, KeyboardButton, ReplyKeyboardMarkup
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
-TOKEN = os.getenv("TOKEN")
+TOKEN = os.getenv("8009352726:AAEU6T6d_1kQffVEXWjQQsbf0G0uhECGerA")  # ключ из Render
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    keyboard = [
-        [InlineKeyboardButton("📄 Документы для визы", callback_data="visa_docs")],
-        [InlineKeyboardButton("🛂 Пересечение границы", callback_data="border_docs")],
-        [InlineKeyboardButton("🇵🇱 Полезные фразы", callback_data="phrases")],
-        [InlineKeyboardButton("📚 Энциклопедия", callback_data="guide")],
-        [InlineKeyboardButton("💬 Поддержка", callback_data="support")],
+    buttons = [
+        [KeyboardButton("📄 Документы для визы")],
+        [KeyboardButton("🛂 Пересечение границы")],
+        [KeyboardButton("🇵🇱 Полезные фразы")],
+        [KeyboardButton("📚 Энциклопедия")],
+        [KeyboardButton("🆘 Поддержка")]
     ]
-    reply_markup = InlineKeyboardMarkup(keyboard)
-    await update.message.reply_text("Выберите нужный раздел:", reply_markup=reply_markup)
+    markup = ReplyKeyboardMarkup(buttons, resize_keyboard=True)
+    await update.message.reply_text("Привет! Я PolandGPTbot. С чего начнём?", reply_markup=markup)
 
-async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    query = update.callback_query
-    await query.answer()
-    responses = {
-        "visa_docs": "📄 Вот список документов для визы...",
-        "border_docs": "🛂 Вот документы для пересечения границы...",
-        "phrases": "🇵🇱 Полезные фразы:\n- Dzień dobry — Добрый день\n- Dziękuję — Спасибо",
-        "guide": "📚 Энциклопедия доступна в гайде: Poland Guide 📎",
-        "support": "💬 Напишите нам: @support_helper_bot",
-    }
-    await query.edit_message_text(responses.get(query.data, "Неизвестная команда"))
+app = ApplicationBuilder().token(TOKEN).build()
+app.add_handler(CommandHandler("start", start))
 
-if __name__ == '__main__':
-    app = ApplicationBuilder().token(TOKEN).build()
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(CallbackQueryHandler(handle_button))
-    app.run_polling()
+app.run_polling()
