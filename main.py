@@ -1,22 +1,29 @@
 import os
-from telegram import Update, KeyboardButton, ReplyKeyboardMarkup
+from telegram import Update, ReplyKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
-TOKEN = os.getenv("BOT_TOKEN")
+TOKEN = os.getenv("TOKEN")
 
+keyboard = [
+    ["📄 Документы для визы", "🌍 Пересечение границы"],
+    ["🗣 Польские фразы", "📚 Энциклопедия"],
+    ["🆘 Поддержка"]
+]
+reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    buttons = [
-        [KeyboardButton("📄 Документы для визы")],
-        [KeyboardButton("🛂 Пересечение границы")],
-        [KeyboardButton("🇵🇱 Полезные фразы")],
-        [KeyboardButton("📚 Энциклопедия")],
-        [KeyboardButton("🆘 Поддержка")]
-    ]
-    markup = ReplyKeyboardMarkup(buttons, resize_keyboard=True)
-    await update.message.reply_text("Привет! Я PolandGPTbot. С чего начнём?", reply_markup=markup)
+    await update.message.reply_text(
+        "Привет! Выбери нужную категорию ниже:",
+        reply_markup=reply_markup
+    )
 
-app = ApplicationBuilder().token(TOKEN).build()
-app.add_handler(CommandHandler("start", start))
+async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("Напиши /start, чтобы увидеть меню.")
 
-app.run_polling()
+if __name__ == "__main__":
+    app = ApplicationBuilder().token(TOKEN).build()
+
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("help", help_command))
+
+    app.run_polling()
