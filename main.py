@@ -23,18 +23,17 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    data = {
+    responses = {
         "visa_docs": "📄 Вот список документов для визы...",
         "border_docs": "🛂 Вот документы для пересечения границы...",
-        "phrases": "🇵🇱 Полезные фразы на польском:\n- Dzień dobry — Добрый день\n- Dziękuję — Спасибо",
+        "phrases": "🇵🇱 Полезные фразы:\n- Dzień dobry — Добрый день\n- Dziękuję — Спасибо",
         "guide": "📚 Энциклопедия доступна в гайде: Poland Guide 📎",
         "support": "💬 Напишите нам: @support_helper_bot",
     }
-    await query.edit_message_text(data.get(query.data, "Неизвестная команда"))
+    await query.edit_message_text(responses.get(query.data, "Неизвестная команда"))
 
 if __name__ == '__main__':
-    app = ApplicationBuilder().token(8009352726:AAEU6T6d_1kQffVEXWjQQsbf0G0uhECGerA).build()
+    app = ApplicationBuilder().token(TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CallbackQueryHandler(handle_button))
     app.run_polling()
-
