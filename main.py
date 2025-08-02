@@ -33,7 +33,7 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.edit_message_text(data.get(query.data, "Неизвестная команда"))
 
 if __name__ == '__main__':
-    app = ApplicationBuilder().token(TOKEN).build()
+    app = ApplicationBuilder().token(8009352726:AAEU6T6d_1kQffVEXWjQQsbf0G0uhECGerA).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CallbackQueryHandler(handle_button))
     app.run_polling()
