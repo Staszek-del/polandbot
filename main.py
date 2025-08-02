@@ -2,7 +2,8 @@ import os
 from telegram import Update, KeyboardButton, ReplyKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
-TOKEN = os.getenv("8009352726:AAEU6T6d_1kQffVEXWjQQsbf0G0uhECGerA")  # ключ из Render
+TOKEN = os.getenv("BOT_TOKEN")
+
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     buttons = [
